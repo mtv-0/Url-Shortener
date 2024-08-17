@@ -15,7 +15,7 @@ export default class Url extends BaseModel {
   declare user_id: number | null
 
   @column()
-  declare deleted_at: DateTime | null
+  declare deleted_at: Date | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

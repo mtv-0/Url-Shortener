@@ -1,6 +1,21 @@
 version: '3'
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile # Especifica o Dockerfile se ele estiver em outro local ou com outro nome
+    container_name: 'url_shortener-app'
+    working_dir: /home/api/
+    command: 'npm run dev'
+    volumes:
+      - .:/home/api/
+      - /home/api/node_modules
+    ports:
+      - '${API_PORT}:${PORT}'
+    links:
+      - database
+
   database:
     container_name: 'url_shortener-database'
     image: mysql
@@ -14,34 +29,3 @@ services:
       - '${DB_PORT}:3306'
     volumes:
       - ./database_mysql/url_shortener:/var/lib/mysql
-
-  app:
-    image: node:14-alpine
-    container_name: 'url_shortener-app'
-    working_dir: /home/api/
-    command: 'npm run dev'
-    volumes:
-      - .:/home/api/
-      - /home/api/node_modules
-    ports:
-      - '${API_PORT}:${PORT}'
-    links:
-      - database
-
-  # Se precisar do Adminer, descomente esta seção:
-  # adminer:
-  #   container_name: 'url_shortener-adminer'
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - '${ADMINER_PORT}:8080'
-
-  # Se precisar do Redis, descomente esta seção:
-  # cache:
-  #   image: redis:6.2-alpine
-  #   restart: always
-  #   ports:
-  #     - '6379:6379'
-  #   command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
-  #   volumes:
-  #     - ./cache:/data
