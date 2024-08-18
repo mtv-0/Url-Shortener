@@ -3,7 +3,6 @@ import IUrlService from '#services/url_service'
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { deleteUrlValidator, updateUrlValidator, createUrlValidator } from '#validators/url'
-//import IUrlService from '#contracts/IUrlService'
 
 @inject()
 export default class UrlsController {
@@ -26,13 +25,18 @@ export default class UrlsController {
     return { url: await this._urlService.saveUrl({ url: ctx.request.body().url }, user) }
   }
 
-  public async redirectToOriginalUrl({ params }: HttpContext) {
-    const url = await this._urlService.redirect(params.url)
-    return url
+  public async redirectToOriginalUrl({ response, params, auth }: HttpContext) {
+    //await auth.authenticate()
+
+    let user: User | undefined
+
+    if (auth.isAuthenticated) user = await auth.user
+
+    const url = await this._urlService.redirect(params.url, user)
+    return response.redirect(url)
   }
 
-  public async get({ request, auth }: HttpContext) {
-    console.log(request)
+  public async get({ auth }: HttpContext) {
     return await this._urlService.index(auth.getUserOrFail().id)
   }
 
