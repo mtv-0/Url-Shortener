@@ -52,6 +52,7 @@ Após iniciar os contêineres, a aplicação estará disponível em http://local
 
 ### EStrutura do projeto:
 
+```
 ├── build/ # Arquivos de build da aplicação
 ├── database_mysql/ # Dados persistidos do MySQL
 ├── src/ # Código-fonte da aplicação
@@ -59,3 +60,4 @@ Após iniciar os contêineres, a aplicação estará disponível em http://local
 ├── docker-compose.yml # Arquivo de configuração do Docker Compose
 ├── Dockerfile # Dockerfile para construir a imagem da aplicação
 └── README.md # Documentação do projeto
+```
