@@ -56,7 +56,8 @@ export default class UrlService {
     return url
   }
   async index(userId: number): Promise<Url[]> {
-    const urls = await Url.query().where({ user_id: userId, deleted_at: null })
+    const urls = await Url.query().where({ user_id: userId, deleted_at: null }).withCount('clicks')
+
     return urls
   }
 }

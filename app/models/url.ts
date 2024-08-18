@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, computed } from '@adonisjs/lucid/orm'
+import { BaseModel, column, computed, hasMany } from '@adonisjs/lucid/orm'
 import env from '#start/env'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
+import UrlClick from './url_click.js'
 
 export default class Url extends BaseModel {
   @column({ isPrimary: true })
@@ -24,8 +26,13 @@ export default class Url extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
+  @hasMany(() => UrlClick, { foreignKey: 'url_id' })
+  declare clicks: HasMany<typeof UrlClick>
+
   @computed()
   get shortned_url() {
     return `https://${env.get('HOST')}/${this.shortned_url_code}`
   }
+
+  serializeExtras = true
 }
