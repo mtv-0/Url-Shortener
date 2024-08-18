@@ -1,7 +1,7 @@
 import Url from '#models/url'
 import UrlClick from '#models/url_click'
 import User from '#models/user'
-import { generateShortUrl, uniqueShortUrl } from '../utils/generateShortUrl.js'
+import { uniqueShortUrl } from '../utils/generateShortUrl.js'
 
 interface UrlInterface {
   url: string
