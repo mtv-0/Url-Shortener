@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: 'url_shortener-app'
+    working_dir: /home/api/
+    command: 'npm run dev'
+    volumes:
+      - .:/home/api/
+      - /home/api/node_modules
+    ports:
+      - '${API_PORT}:${PORT}'
+    network_mode: host
+
+  database:
+    container_name: 'url_shortener-database'
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - '${DB_PORT}:3306'
+    volumes:
+      - ./database_mysql/url_shortener:/var/lib/mysql
+    network_mode: host
