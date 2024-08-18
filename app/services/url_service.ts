@@ -1,7 +1,6 @@
 import Url from '#models/url'
 import UrlClick from '#models/url_click'
 import User from '#models/user'
-import env from '#start/env'
 import { generateShortUrl } from '../utils/generateShortUrl.js'
 
 interface UrlInterface {
