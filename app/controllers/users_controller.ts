@@ -3,6 +3,7 @@
 import UserService from '#services/user_service'
 import { HttpContext } from '@adonisjs/core/http'
 import { inject } from '@adonisjs/core'
+import { createUserValidator } from '#validators/user'
 
 @inject()
 export default class UsersController {
@@ -11,6 +12,7 @@ export default class UsersController {
     this.__userService = userService
   }
   public async post(ctx: HttpContext) {
+    await ctx.request.validateUsing(createUserValidator)
     const body = ctx.request.body()
     return await this.__userService.saveUser({
       email: body.email,

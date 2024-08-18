@@ -32,7 +32,7 @@ export default class UrlService {
     return url
   }
   async update(urlId: number, targetUrl: string): Promise<Url> {
-    const url = await Url.findOrFail(urlId)
+    const url = await Url.query().where({ id: urlId, deleted_at: null }).firstOrFail()
 
     await url
       .merge({
