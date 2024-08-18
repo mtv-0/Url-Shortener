@@ -1,7 +1,7 @@
 import Url from '#models/url'
 import UrlClick from '#models/url_click'
 import User from '#models/user'
-import { generateShortUrl } from '../utils/generateShortUrl.js'
+import { generateShortUrl, uniqueShortUrl } from '../utils/generateShortUrl.js'
 
 interface UrlInterface {
   url: string
@@ -28,7 +28,7 @@ export default class UrlService {
   async saveUrl(data: UrlInterface, user?: User): Promise<Url> {
     return await Url.create({
       original_url: data.url,
-      shortned_url_code: generateShortUrl(),
+      shortned_url_code: await uniqueShortUrl(),
       user_id: user?.id,
     })
   }
