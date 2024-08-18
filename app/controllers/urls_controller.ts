@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import IUrlService from '#services/url_service'
 import { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 //import IUrlService from '#contracts/IUrlService'
 
 @inject()
@@ -11,8 +12,16 @@ export default class UrlsController {
     this._urlService = urlService
   }
 
-  public shortenUrl(ctx: HttpContext) {
-    return this._urlService.saveUrl({ url: ctx.request.body().url })
+  public async shortenUrl(ctx: HttpContext) {
+    await ctx.auth.authenticate()
+
+    let user: User | undefined
+
+    if (ctx.auth.isAuthenticated) {
+      user = await ctx.auth.user
+    }
+
+    return { url: await this._urlService.saveUrl({ url: ctx.request.body().url }, user) }
   }
 
   public async redirectToOriginalUrl({ params }: HttpContext) {
@@ -30,6 +39,6 @@ export default class UrlsController {
 
   public async delete({ params }: HttpContext) {
     await this._urlService.delete(params.id)
-    return 'Url deletada com sucesso'
+    return { message: 'Url deletada com sucesso' }
   }
 }

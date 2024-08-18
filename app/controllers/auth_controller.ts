@@ -2,6 +2,7 @@
 import { inject } from '@adonisjs/core'
 import AuthService from '#services/auth_service'
 import { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 
 @inject()
 export default class AuthController {
@@ -13,8 +14,13 @@ export default class AuthController {
 
   public async auth({ request }: HttpContext) {
     const body = request.body()
-    const token = await this._authService.auth(body.email, body.password)
+    const user = await this._authService.auth(body.email, body.password)
 
-    return token
+    const token = await User.accessTokens.create(user)
+
+    return {
+      type: 'bearer',
+      value: token.value!.release(),
+    }
   }
 }

@@ -2,9 +2,7 @@ version: '3'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile # Especifica o Dockerfile se ele estiver em outro local ou com outro nome
+    build: .
     container_name: 'url_shortener-app'
     working_dir: /home/api/
     command: 'npm run dev'
@@ -13,8 +11,7 @@ services:
       - /home/api/node_modules
     ports:
       - '${API_PORT}:${PORT}'
-    links:
-      - database
+    network_mode: host
 
   database:
     container_name: 'url_shortener-database'
@@ -29,3 +26,4 @@ services:
       - '${DB_PORT}:3306'
     volumes:
       - ./database_mysql/url_shortener:/var/lib/mysql
+    network_mode: host

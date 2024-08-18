@@ -12,7 +12,7 @@ export default class Url extends BaseModel {
   declare shortned_url: string
 
   @column()
-  declare user_id: number | null
+  declare user_id: number | null | undefined
 
   @column()
   declare deleted_at: Date | null

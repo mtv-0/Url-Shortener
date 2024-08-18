@@ -1,4 +1,5 @@
 import Url from '#models/url'
+import User from '#models/user'
 import env from '#start/env'
 import { generateShortUrl } from '../utils/generateShortUrl.js'
 
@@ -12,10 +13,10 @@ export default class UrlService {
     return url.original_url
   }
 
-  async saveUrl(data: UrlInterface): Promise<string> {
-    const newUrl = `${env.get('HOST')}/${generateShortUrl()}`
+  async saveUrl(data: UrlInterface, user?: User): Promise<string> {
+    const newUrl = `https://${env.get('HOST')}/${generateShortUrl()}`
 
-    await Url.create({ original_url: data.url, shortned_url: newUrl })
+    await Url.create({ original_url: data.url, shortned_url: newUrl, user_id: user?.id })
 
     return newUrl
   }
