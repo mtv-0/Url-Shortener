@@ -8,6 +8,15 @@ interface UrlInterface {
 }
 
 export default class UrlService {
+  async verifyOwnership(urlId: number, userId: number): Promise<Boolean> {
+    const url = await Url.query().where({ user_id: userId, id: urlId })
+    if (!url) {
+      throw new Error('Você não tem permissão para esta ação. Esta URL não pertence à você!.')
+    }
+
+    return true
+  }
+
   private async findUrlRow(shortnedUrl: string): Promise<Url> {
     return await Url.findByOrFail('shortned_url_code', shortnedUrl)
   }

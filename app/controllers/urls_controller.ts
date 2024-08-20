@@ -40,13 +40,19 @@ export default class UrlsController {
     return await this._urlService.index(auth.getUserOrFail().id)
   }
 
-  public async update({ request, params }: HttpContext) {
+  public async update({ request, params, auth }: HttpContext) {
+    await auth.authenticate()
+    await this._urlService.verifyOwnership(params.id, auth.user!.id)
+
     await request.validateUsing(updateUrlValidator)
 
     return await this._urlService.update(params.id, request.body().targetUrl)
   }
 
-  public async delete({ request, params }: HttpContext) {
+  public async delete({ request, params, auth }: HttpContext) {
+    await auth.authenticate()
+    await this._urlService.verifyOwnership(params.id, auth.user!.id)
+
     await request.validateUsing(deleteUrlValidator)
     await this._urlService.delete(params.id)
     return { message: 'Url deletada com sucesso' }
