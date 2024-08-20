@@ -9,7 +9,7 @@ interface UrlInterface {
 
 export default class UrlService {
   async verifyOwnership(urlId: number, userId: number): Promise<Boolean> {
-    const url = await Url.query().where({ user_id: userId, id: urlId })
+    const url = await Url.query().where({ user_id: userId, id: urlId }).first()
     if (!url) {
       throw new Error('Você não tem permissão para esta ação. Esta URL não pertence à você!.')
     }
