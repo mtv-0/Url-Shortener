@@ -12,6 +12,8 @@ services:
     ports:
       - '${API_PORT}:${PORT}'
     network_mode: host
+    depends_on:
+      - database
 
   database:
     container_name: 'url_shortener-database'
