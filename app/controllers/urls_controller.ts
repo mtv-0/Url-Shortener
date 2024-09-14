@@ -12,6 +12,10 @@ export default class UrlsController {
     this._urlService = urlService
   }
 
+  /**
+   * @shortenUrl
+   * @requestBody {"url": "https://youtube.com"}
+   */
   public async shortenUrl(ctx: HttpContext) {
     await ctx.request.validateUsing(createUrlValidator)
     await ctx.auth.authenticate()
@@ -40,6 +44,11 @@ export default class UrlsController {
     return await this._urlService.index(auth.getUserOrFail().id)
   }
 
+  /**
+   * @update
+   * @paramPath id - ID da URL a ser editada - @type(number) @required
+   * @requestBody {"targetUrl": "https://google.com"}
+   */
   public async update({ request, params, auth }: HttpContext) {
     await auth.authenticate()
     await this._urlService.verifyOwnership(params.id, auth.user!.id)
@@ -49,6 +58,10 @@ export default class UrlsController {
     return await this._urlService.update(params.id, request.body().targetUrl)
   }
 
+  /**
+   * @delete
+   * @paramPath id - ID da URL a ser excluida - @type(number) @required
+   */
   public async delete({ request, params, auth }: HttpContext) {
     await auth.authenticate()
     await this._urlService.verifyOwnership(params.id, auth.user!.id)

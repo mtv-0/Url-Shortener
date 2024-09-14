@@ -12,6 +12,10 @@ export default class AuthController {
     this._authService = authService
   }
 
+  /**
+   * @auth
+   * @requestBody {"email": "example@email.com", "password": "123#abc"}
+   */
   public async auth({ request }: HttpContext) {
     const body = request.body()
     const user = await this._authService.auth(body.email, body.password)

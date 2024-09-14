@@ -11,6 +11,11 @@ export default class UsersController {
   constructor(userService: UserService) {
     this.__userService = userService
   }
+
+  /**
+   * @post
+   * @requestBody <createUserValidator>
+   */
   public async post(ctx: HttpContext) {
     await ctx.request.validateUsing(createUserValidator)
     const body = ctx.request.body()

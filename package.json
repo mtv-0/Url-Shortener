@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node bin/server.js",
     "build": "node ace build",
-    "dev": "node ace migration:run && node ace serve --hmr",
+    "dev": "node ace migration:run && node ace serve --watch",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -56,6 +56,8 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.1.1",
     "@vinejs/vine": "^2.1.0",
+    "adonis-autoswagger": "^3.63.0",
+    "adonis5-swagger": "^1.4.1",
     "luxon": "^3.5.0",
     "mysql2": "^3.11.0",
     "reflect-metadata": "^0.2.2",

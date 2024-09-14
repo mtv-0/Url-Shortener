@@ -9,6 +9,7 @@ export default class Url extends BaseModel {
   declare id: number
 
   @column()
+  // @example(https://youtube.com)
   declare original_url: string
 
   @column()

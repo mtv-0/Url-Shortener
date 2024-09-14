@@ -5,62 +5,13 @@
     "version": "1.0.0",
     "description": "API for shortening URLs, managing them, and tracking clicks."
   },
-  "servers": [
-    {
-      "url": "http://localhost:3000",
-      "description": "Local server"
-    }
-  ],
+  "servers": [{ "url": "http://localhost:3000", "description": "Local server" }],
   "components": {
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    },
-    "schemas": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "123456789"
-          },
-          "email": {
-            "type": "string",
-            "example": "user@example.com"
-          }
-        }
-      },
-      "Url": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "1"
-          },
-          "original_url": {
-            "type": "string",
-            "example": "https://example.com"
-          },
-          "shortened_url": {
-            "type": "string",
-            "example": "http://localhost:3000/aZbKq7"
-          },
-          "clicks_count": {
-            "type": "integer",
-            "example": 10
-          }
-        }
-      }
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
     }
   },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
+  "security": [{ "bearerAuth": [] }],
   "paths": {
     "/auth/register": {
       "post": {
@@ -71,14 +22,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  }
+                  "email": { "type": "string", "example": "user@example.com" },
+                  "password": { "type": "string", "example": "password123" }
                 },
                 "required": ["email", "password"]
               }
@@ -91,14 +36,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "example": "123456789" },
+                    "email": { "type": "string", "example": "user@example.com" }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Email already in use"
-          }
+          "400": { "description": "Bad Request - Email already in use" }
         }
       }
     },
@@ -111,14 +58,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  }
+                  "email": { "type": "string", "example": "user@example.com" },
+                  "password": { "type": "string", "example": "password123" }
                 },
                 "required": ["email", "password"]
               }
@@ -142,9 +83,7 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid credentials"
-          }
+          "400": { "description": "Bad Request - Invalid credentials" }
         }
       }
     },
@@ -157,10 +96,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "originalUrl": {
-                    "type": "string",
-                    "example": "https://example.com"
-                  }
+                  "originalUrl": { "type": "string", "example": "https://example.com" }
                 },
                 "required": ["originalUrl"]
               }
@@ -173,7 +109,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Url"
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "example": "1" },
+                    "original_url": { "type": "string", "example": "https://example.com" },
+                    "shortened_url": {
+                      "type": "string",
+                      "example": "http://localhost:3000/aZbKq7"
+                    },
+                    "clicks_count": { "type": "integer", "example": 10 }
+                  }
                 }
               }
             }
@@ -184,11 +129,7 @@
     "/urls": {
       "get": {
         "summary": "List URLs created by the authenticated user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "A list of URLs",
@@ -197,7 +138,16 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Url"
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string", "example": "1" },
+                      "original_url": { "type": "string", "example": "https://example.com" },
+                      "shortened_url": {
+                        "type": "string",
+                        "example": "http://localhost:3000/aZbKq7"
+                      },
+                      "clicks_count": { "type": "integer", "example": 10 }
+                    }
                   }
                 }
               }
@@ -209,19 +159,14 @@
     "/urls/{id}": {
       "put": {
         "summary": "Update a shortened URL",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" },
+            "description": "ID of the URL to update"
           }
         ],
         "requestBody": {
@@ -230,10 +175,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "newUrl": {
-                    "type": "string",
-                    "example": "https://new-example.com"
-                  }
+                  "newUrl": { "type": "string", "example": "https://new-example.com" }
                 },
                 "required": ["newUrl"]
               }
@@ -246,40 +188,38 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Url"
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "example": "1" },
+                    "original_url": { "type": "string", "example": "https://new-example.com" },
+                    "shortened_url": {
+                      "type": "string",
+                      "example": "http://localhost:3000/aZbKq7"
+                    },
+                    "clicks_count": { "type": "integer", "example": 10 }
+                  }
                 }
               }
             }
           },
-          "404": {
-            "description": "URL not found"
-          }
+          "404": { "description": "Not Found - URL not found" }
         }
       },
       "delete": {
         "summary": "Delete a shortened URL",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" },
+            "description": "ID of the URL to delete"
           }
         ],
         "responses": {
-          "204": {
-            "description": "URL deleted successfully"
-          },
-          "404": {
-            "description": "URL not found"
-          }
+          "204": { "description": "No Content - URL deleted successfully" },
+          "404": { "description": "Not Found - URL not found" }
         }
       }
     },
@@ -291,26 +231,21 @@
             "name": "shortenedUrl",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" },
+            "description": "The shortened URL"
           }
         ],
         "responses": {
           "302": {
-            "description": "Redirecting to original URL",
+            "description": "Found - Redirecting to original URL",
             "headers": {
               "Location": {
-                "schema": {
-                  "type": "string"
-                },
+                "schema": { "type": "string" },
                 "description": "The location to redirect to"
               }
             }
           },
-          "404": {
-            "description": "URL not found"
-          }
+          "404": { "description": "Not Found - URL not found" }
         }
       }
     }
