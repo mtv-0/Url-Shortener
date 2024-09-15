@@ -3,18 +3,16 @@ import { middleware } from './kernel.js'
 import AutoSwagger from 'adonis-autoswagger'
 import swagger from '#config/swagger'
 
-router.get('/:url', '#controllers/urls_controller.redirectToOriginalUrl')
+// Prefixe as rotas de "url" com "/api/url" para evitar conflitos
+router.post('api/url', '#controllers/urls_controller.shortenUrl')
+router.get('api/url', '#controllers/urls_controller.get').use([middleware.auth()])
+router.put('api/url/:id', '#controllers/urls_controller.update').use([middleware.auth()])
+router.delete('api/url/:id', '#controllers/urls_controller.delete').use([middleware.auth()])
 
-router.post('url', '#controllers/urls_controller.shortenUrl')
-router.get('url', '#controllers/urls_controller.get').use([middleware.auth()])
-router.put('url/:id', '#controllers/urls_controller.update').use([middleware.auth()])
-router.delete('url/:id', '#controllers/urls_controller.delete').use([middleware.auth()])
+router.post('api/user', '#controllers/users_controller.post')
+router.post('api/auth', '#controllers/auth_controller.auth')
 
-router.post('user', '#controllers/users_controller.post')
-
-router.post('auth', '#controllers/auth_controller.auth')
-
-// Renders Swagger-UI and passes YAML-output of /swagger
+// Rotas de documentação Swagger
 router.get('/docs/routes', async () => {
   return AutoSwagger.default.ui('/docs/swagger', swagger)
 })
@@ -22,3 +20,6 @@ router.get('/docs/routes', async () => {
 router.get('/docs/swagger', async () => {
   return AutoSwagger.default.docs(router.toJSON(), swagger)
 })
+
+// A rota dinâmica vem por último
+router.get('/:url', '#controllers/urls_controller.redirectToOriginalUrl')

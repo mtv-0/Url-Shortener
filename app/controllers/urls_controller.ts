@@ -18,7 +18,7 @@ export default class UrlsController {
    */
   public async shortenUrl(ctx: HttpContext) {
     await ctx.request.validateUsing(createUrlValidator)
-    await ctx.auth.authenticate()
+    await ctx.auth.authenticate().catch(() => {})
 
     let user: User | undefined
 
@@ -26,7 +26,7 @@ export default class UrlsController {
       user = await ctx.auth.user
     }
 
-    return { url: await this._urlService.saveUrl({ url: ctx.request.body().url }, user) }
+    return await this._urlService.saveUrl({ url: ctx.request.body().url }, user)
   }
 
   public async redirectToOriginalUrl({ response, params, auth }: HttpContext) {
