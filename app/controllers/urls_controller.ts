@@ -26,7 +26,20 @@ export default class UrlsController {
       user = await ctx.auth.user
     }
 
-    return await this._urlService.saveUrl({ url: ctx.request.body().url }, user)
+    const data = await this._urlService.saveUrl({ url: ctx.request.body().url }, user)
+
+    ctx.logger.info(
+      {
+        ip: ctx.request.ip(),
+        userAgent: ctx.request.header('User-Agent'),
+        status: ctx.response.response.statusCode,
+        url: ctx.request.body().url,
+        generated_url: data.shortned_url_code,
+      },
+      'Generated URL'
+    )
+
+    return data
   }
 
   public async redirectToOriginalUrl({ response, params, auth }: HttpContext) {
@@ -62,12 +75,24 @@ export default class UrlsController {
    * @delete
    * @paramPath id - ID da URL a ser excluida - @type(number) @required
    */
-  public async delete({ request, params, auth }: HttpContext) {
-    await auth.authenticate()
-    await this._urlService.verifyOwnership(params.id, auth.user!.id)
+  public async delete(ctx: HttpContext) {
+    await ctx.auth.authenticate()
+    await this._urlService.verifyOwnership(ctx.params.id, ctx.auth.user!.id)
 
-    await request.validateUsing(deleteUrlValidator)
-    await this._urlService.delete(params.id)
+    await ctx.request.validateUsing(deleteUrlValidator)
+    await this._urlService.delete(ctx.params.id)
+
+    ctx.logger.warn(
+      {
+        ip: ctx.request.ip(),
+        userAgent: ctx.request.header('User-Agent'),
+        status: ctx.response.response.statusCode,
+        url_id: ctx.params.id,
+        user_id: ctx.auth.user!.id,
+      },
+      'Deleted URL'
+    )
+
     return { message: 'Url deletada com sucesso' }
   }
 }
