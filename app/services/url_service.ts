@@ -1,3 +1,4 @@
+import UnAuthorizedException from '#exceptions/un_authorized_exception'
 import Url from '#models/url'
 import UrlClick from '#models/url_click'
 import User from '#models/user'
@@ -11,7 +12,9 @@ export default class UrlService {
   async verifyOwnership(urlId: number, userId: number): Promise<Boolean> {
     const url = await Url.query().where({ user_id: userId, id: urlId }).first()
     if (!url) {
-      throw new Error('Você não tem permissão para esta ação. Esta URL não pertence à você!.')
+      throw new UnAuthorizedException(
+        'Você não tem permissão para esta ação. Esta URL não pertence à você!'
+      )
     }
 
     return true

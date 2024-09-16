@@ -118,8 +118,6 @@ Essas melhorias têm como objetivo otimizar o desempenho da aplicação, reduzir
 - Ter instrumentação de observabilidade (implementação real ou abstração) de um ou vários tipos:
   - Logs
 - Deixar no README pontos de melhoria para caso o sistema necessite escalar horizontalmente e quais serão os maiores desafios.
-- Git tags definindo versões de release, por exemplo release 0.1.0 como encurtador criado, 0.2.0 como autenticação, 0.3.0 como operações de usuário no encurtador, 0.4.0 como contabilização de acessos.
-- Construir funcionalidades a mais que acredite ser interessante para o “domínio do negócio” da aplicação.
+- Git tags definindo versões de release
 - Definir e assegurar quais versões do NodeJS são aceitas no projeto.
-- Configurar pré commit ou pre push hooks.
 - Código tolerante a falhas.
