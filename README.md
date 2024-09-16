@@ -23,6 +23,7 @@ Este é um projeto de encurtador de URLs desenvolvido em Node.js, utilizando Doc
 
 - Docker e Docker Compose instalados na máquina.
 - Git para clonar o repositório.
+- Node.js >= 20.6.
 
 ### Variáveis de Ambiente
 
@@ -62,6 +63,20 @@ Após iniciar os contêineres, a aplicação estará disponível em http://local
 └── README.md # Documentação do projeto
 ```
 
+### Acessando a documentação da API
+
+Com o projeto rodando, basta jogar no navegador: http://localhost:3000/docs/routes ou o link com a devida porta que foi configurada no projeto.
+
+O projeto conta com a documentação desenvolvida no swagger, com auxilio do **adonis-autoswagger** que ajuda a manter a documentação dinâmica e sempre atualizada, realização baseada na documentação: https://github.com/ad-on-is/adonis-autoswagger
+
+### Rodando os testes
+
+```bash
+node ace test
+```
+
+Obs: testes desenvolvidos utilizando o japa (Framework suportado nativamente pelo adonisJS), documentação: https://japa.dev/docs/introduction
+
 ## Melhorias Propostas
 
 Para suportar grandes volumes de acessos e garantir a escalabilidade da aplicação, proponho as seguintes melhorias:
@@ -93,3 +108,18 @@ Para diminuir a probabilidade de colisões de chaves e manter a performance da a
    - **Motivo**: Embora essa abordagem também ajude a limpar URLs obsoletas, ela pode gerar uma experiência negativa para o usuário, pois a remoção ocorre apenas após a tentativa de acesso.
 
 Essas melhorias têm como objetivo otimizar o desempenho da aplicação, reduzir a carga no banco de dados e garantir que a aplicação continue a escalar eficientemente mesmo sob alto volume de acessos.
+
+## Itens realizados:
+
+- Utilizar docker-compose para subir o ambiente completo localmente.
+- Ter testes unitários
+- API está documentada com OPEN API ou Swagger
+- Ter validação de entrada em todos os lugares necessários.
+- Ter instrumentação de observabilidade (implementação real ou abstração) de um ou vários tipos:
+  - Logs
+- Deixar no README pontos de melhoria para caso o sistema necessite escalar horizontalmente e quais serão os maiores desafios.
+- Git tags definindo versões de release, por exemplo release 0.1.0 como encurtador criado, 0.2.0 como autenticação, 0.3.0 como operações de usuário no encurtador, 0.4.0 como contabilização de acessos.
+- Construir funcionalidades a mais que acredite ser interessante para o “domínio do negócio” da aplicação.
+- Definir e assegurar quais versões do NodeJS são aceitas no projeto.
+- Configurar pré commit ou pre push hooks.
+- Código tolerante a falhas.
